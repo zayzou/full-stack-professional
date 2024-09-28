@@ -1,29 +1,40 @@
 import {
     AlertDialog,
-    AlertDialogBody, AlertDialogContent,
-    AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
-    Avatar,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Box,
     Button,
     Center,
-    Flex,
     Heading,
     Image,
     Stack,
     Tag,
     Text,
-    useColorModeValue, useDisclosure,
+    useColorModeValue,
+    useDisclosure,
 } from '@chakra-ui/react';
 
 import {useRef} from 'react'
-import {customerProfilePictureUrl, deleteCustomer} from "../../services/client.js";
+import {deleteProduit} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
-import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
+import UpdateProduitDrawer from "./UpdateProduitDrawer.jsx";
 
-export default function CardWithImage({id, name, email, age, gender, imageNumber, fetchCustomers}) {
-    const randomUserGender = gender === "MALE" ? "men" : "women";
+export default function CardWithImage({
+                                          id,
+                                          name,
+                                          codeArticle,
+                                          email,
+                                          age,
+                                          category,
+                                          brand,
+                                          productImage,
+                                          fetchProduits
+                                      }) {
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const {isOpen, onOpen, onClose} = useDisclosure()
     const cancelRef = useRef()
 
     return (
@@ -41,37 +52,27 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                     h={'120px'}
                     w={'full'}
                     src={
-                        'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+                        productImage
                     }
                     objectFit={'cover'}
                 />
-                <Flex justify={'center'} mt={-12}>
-                    <Avatar
-                        size={'xl'}
-                        src={customerProfilePictureUrl(id)}
-                        alt={'Author'}
-                        css={{
-                            border: '2px solid white',
-                        }}
-                    />
-                </Flex>
 
                 <Box p={6}>
                     <Stack spacing={2} align={'center'} mb={5}>
-                        <Tag borderRadius={"full"}>{id}</Tag>
+                        <Tag borderRadius={"full"}>{codeArticle}</Tag>
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                             {name}
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
-                        <Text color={'gray.500'}>Age {age} | {gender}</Text>
+                        <Text color={'gray.500'}>{brand.name} | {category.name}</Text>
                     </Stack>
                 </Box>
                 <Stack direction={'row'} justify={'center'} spacing={6} p={4}>
                     <Stack>
-                        <UpdateCustomerDrawer
-                            initialValues={{ name, email, age }}
-                            customerId={id}
-                            fetchCustomers={fetchCustomers}
+                        <UpdateProduitDrawer
+                            initialValues={{name, email, age}}
+                            produitId={id}
+                            fetchProduits={fetchProduits}
                         />
                     </Stack>
                     <Stack>
@@ -88,7 +89,7 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                             }}
                             onClick={onOpen}
                         >
-                            Delete
+                            Supprimer
                         </Button>
                         <AlertDialog
                             isOpen={isOpen}
@@ -98,7 +99,7 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                             <AlertDialogOverlay>
                                 <AlertDialogContent>
                                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                        Delete Customer
+                                        Delete Produit
                                     </AlertDialogHeader>
 
                                     <AlertDialogBody>
@@ -110,13 +111,13 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                                             Cancel
                                         </Button>
                                         <Button colorScheme='red' onClick={() => {
-                                            deleteCustomer(id).then(res => {
+                                            deleteProduit(id).then(res => {
                                                 console.log(res)
                                                 successNotification(
-                                                    'Customer deleted',
+                                                    'Produit deleted',
                                                     `${name} was successfully deleted`
                                                 )
-                                                fetchCustomers();
+                                                fetchProduits();
 
                                             }).catch(err => {
                                                 console.log(err);

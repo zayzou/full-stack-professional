@@ -47,7 +47,7 @@ const LoginForm = () => {
             validateOnMount={true}
             validationSchema={
                 Yup.object({
-                    username: Yup.string()
+                    email: Yup.string()
                         .email("Must be valid email")
                         .required("Email is required"),
                     password: Yup.string()
@@ -55,11 +55,11 @@ const LoginForm = () => {
                         .required("Password is required")
                 })
             }
-            initialValues={{username: '', password: ''}}
+            initialValues={{email: '', password: ''}}
             onSubmit={(values, {setSubmitting}) => {
                 setSubmitting(true);
                 login(values).then(res => {
-                    navigate("/dashboard")
+                    navigate("/dashboard/produits")
                     console.log("Successfully logged in");
                 }).catch(err => {
                     errorNotification(
@@ -76,7 +76,7 @@ const LoginForm = () => {
                     <Stack mt={15} spacing={15}>
                         <MyTextInput
                             label={"Email"}
-                            name={"username"}
+                            name={"email"}
                             type={"email"}
                             placeholder={"hello@amigoscode.com"}
                         />
@@ -107,7 +107,7 @@ const Login = () => {
 
     useEffect(() => {
         if (customer) {
-            navigate("/dashboard/customers");
+            navigate("/dashboard/produits");
         }
     })
 
@@ -116,12 +116,12 @@ const Login = () => {
             <Flex p={8} flex={1} alignItems={'center'} justifyContent={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Image
-                        src={"https://user-images.githubusercontent.com/40702606/210880158-e7d698c2-b19a-4057-b415-09f48a746753.png"}
+                        src={"https://images.ctfassets.net/8sdirxbcrn01/5eKfbbR4CoLT88i54gOWwy/0770b0f3579c54949a04dfd0c40cfcb6/stilina-removebg-preview.png"}
                         boxSize={"200px"}
                         alt={"Amigoscode Logo"}
                         alignSelf={"center"}
                     />
-                    <Heading fontSize={'2xl'} mb={15}>Sign in to your account</Heading>
+                    <Heading fontSize={'2xl'} mb={15}>Se connecter</Heading>
                     <LoginForm/>
                     <Link color={"blue.500"} href={"/signup"}>
                         Dont have an account? Signup now.
@@ -134,18 +134,17 @@ const Login = () => {
                 flexDirection={"column"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                bgGradient={{sm: 'linear(to-r, blue.600, purple.600)'}}
+                bgGradient={{sm: 'linear(to-r, blue.600, blue.800)'}}
             >
                 <Text fontSize={"6xl"} color={'white'} fontWeight={"bold"} mb={5}>
                     <Link target={"_blank"} href={"https://amigoscode.com/courses"}>
-                        Enrol Now
                     </Link>
                 </Text>
                 <Image
                     alt={'Login Image'}
                     objectFit={'scale-down'}
                     src={
-                        'https://user-images.githubusercontent.com/40702606/215539167-d7006790-b880-4929-83fb-c43fa74f429e.png'
+                        'https://dev.stilina.com/assets/msb-XGVe-rnY.png'
                     }
                 />
             </Flex>

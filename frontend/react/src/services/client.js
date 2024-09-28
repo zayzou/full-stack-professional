@@ -1,15 +1,18 @@
 import axios from 'axios';
 
+// export const API_BASE_URL = "https://stilina-api-env.eba-5bv9wity.ca-central-1.elasticbeanstalk.com/api/v1";
+export const API_BASE_URL = "http://localhost:8080/api/v1";
+
 const getAuthConfig = () => ({
     headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+        Authorization: `${localStorage.getItem("access_token")}`
     }
 })
 
-export const getCustomers = async () => {
+export const getProducts = async () => {
     try {
         return await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
+            `${API_BASE_URL}/products/all`,
             getAuthConfig()
         )
     } catch (e) {
@@ -17,21 +20,21 @@ export const getCustomers = async () => {
     }
 }
 
-export const saveCustomer = async (customer) => {
+export const saveProduit = async (product) => {
     try {
         return await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
-            customer
+            `${API_BASE_URL}/products`,
+            product
         )
     } catch (e) {
         throw e;
     }
 }
 
-export const updateCustomer = async (id, update) => {
+export const updateProduit = async (id, update) => {
     try {
         return await axios.put(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}`,
+            `${API_BASE_URL}/api/v1/products/${id}`,
             update,
             getAuthConfig()
         )
@@ -40,10 +43,10 @@ export const updateCustomer = async (id, update) => {
     }
 }
 
-export const deleteCustomer = async (id) => {
+export const deleteProduit = async (id) => {
     try {
         return await axios.delete(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}`,
+            `${API_BASE_URL}/api/v1/products/${id}`,
             getAuthConfig()
         )
     } catch (e) {
@@ -51,25 +54,25 @@ export const deleteCustomer = async (id) => {
     }
 }
 
-export const login = async (usernameAndPassword) => {
+export const login = async (emailAndPassword) => {
     try {
         return await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/login`,
-            usernameAndPassword
+            `${API_BASE_URL}/auth/login`,
+            emailAndPassword
         )
     } catch (e) {
         throw e;
     }
 }
 
-export const uploadCustomerProfilePicture = async (id, formData) => {
+export const uploadProduitProfilePicture = async (id, formData) => {
     try {
         return axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`,
+            `${API_BASE_URL}/api/v1/products/${id}/profile-image`,
             formData,
             {
                 ...getAuthConfig(),
-                'Content-Type' : 'multipart/form-data'
+                'Content-Type': 'multipart/form-data'
             }
         );
     } catch (e) {
@@ -77,5 +80,5 @@ export const uploadCustomerProfilePicture = async (id, formData) => {
     }
 }
 
-export const customerProfilePictureUrl = (id) =>
-    `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`;
+export const produitProfilePictureUrl = (id) =>
+    `${API_BASE_URL}/api/v1/products/${id}/profile-image`;

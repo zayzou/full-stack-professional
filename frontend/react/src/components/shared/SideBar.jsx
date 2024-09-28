@@ -33,8 +33,7 @@ import {
 import {useAuth} from "../context/AuthContext.jsx";
 
 const LinkItems = [
-    {name: 'Home', route: '/dashboard', icon: FiHome},
-    {name: 'Customers', route: '/dashboard/customers',  icon: FiUsers},
+    {name: 'Produits', route: '/dashboard/produits', icon: FiUsers},
     {name: 'Settings', route: '/dashboard/settings', icon: FiSettings},
 ];
 
@@ -78,15 +77,15 @@ const SidebarContent = ({onClose, ...rest}) => {
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" flexDirection="column" alignItems="center" mx="8" mb={75} mt={2} justifyContent="space-between">
+            <Flex h="20" flexDirection="column" alignItems="center" mx="8" mb={75} mt={2}
+                  justifyContent="space-between">
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold" mb={5}>
                     Dashboard
                 </Text>
                 <Image
                     borderRadius='full'
-                    boxSize='75px'
-                    src='https://user-images.githubusercontent.com/40702606/210880158-e7d698c2-b19a-4057-b415-09f48a746753.png'
-                    alt='Amigoscode'
+                    src='https://images.ctfassets.net/8sdirxbcrn01/5eKfbbR4CoLT88i54gOWwy/0770b0f3579c54949a04dfd0c40cfcb6/stilina-removebg-preview.png'
+                    alt='Stilina'
                 />
                 <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
             </Flex>
@@ -131,7 +130,7 @@ const NavItem = ({icon, route, children, ...rest}) => {
 };
 
 const MobileNav = ({onOpen, ...rest}) => {
-    const { logOut, customer } = useAuth()
+    const {logOut, customer} = useAuth()
     return (
         <Flex
             ml={{base: 0, md: 60}}
@@ -184,12 +183,12 @@ const MobileNav = ({onOpen, ...rest}) => {
                                     alignItems="flex-start"
                                     spacing="1px"
                                     ml="2">
-                                    <Text fontSize="sm">{customer?.username}</Text>
-                                    {customer?.roles.map((role, id) => (
+                                    <Text fontSize="sm">{customer?.email}</Text>
+                                    {/*    {customer?.roles.map((role, id) => (
                                         <Text key={id} fontSize="xs" color="gray.600">
                                             {role}
                                         </Text>
-                                    ))}
+                                    ))}*/}
                                 </VStack>
                                 <Box display={{base: 'none', md: 'flex'}}>
                                     <FiChevronDown/>

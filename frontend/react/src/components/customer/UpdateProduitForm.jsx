@@ -1,8 +1,10 @@
 import {Form, Formik, useField} from 'formik';
 import * as Yup from 'yup';
-import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {saveCustomer} from "../../services/client.js";
-import {successNotification, errorNotification} from "../../services/notification.js";
+import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Stack, VStack} from "@chakra-ui/react";
+import {produitProfilePictureUrl, updateProduit, uploadProduitProfilePicture} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
+import {useCallback} from "react";
+import {useDropzone} from "react-dropzone";
 
 const MyTextInput = ({label, ...props}) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -23,34 +25,60 @@ const MyTextInput = ({label, ...props}) => {
     );
 };
 
-const MySelect = ({label, ...props}) => {
-    const [field, meta] = useField(props);
+const MyDropzone = ({ produitId, fetchProduits }) => {
+    const onDrop = useCallback(acceptedFiles => {
+        const formData = new FormData();
+        formData.append("file", acceptedFiles[0])
+
+        uploadProduitProfilePicture(
+            produitId,
+            formData
+        ).then(() => {
+            successNotification("Success", "Profile picture uploaded")
+            fetchProduits()
+        }).catch(() => {
+            errorNotification("Error", "Profile picture failed upload")
+        })
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
     return (
-        <Box>
-            <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
-            <Select {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <Alert className="error" status={"error"} mt={2}>
-                    <AlertIcon/>
-                    {meta.error}
-                </Alert>
-            ) : null}
+        <Box {...getRootProps()}
+             w={'100%'}
+             textAlign={'center'}
+             border={'dashed'}
+             borderColor={'gray.200'}
+             borderRadius={'3xl'}
+             p={6}
+             rounded={'md'}>
+            <input {...getInputProps()} />
+            {
+                isDragActive ?
+                    <p>Drop the picture here ...</p> :
+                    <p>Drag 'n' drop picture here, or click to select picture</p>
+            }
         </Box>
-    );
-};
+    )
+}
 
 // And now we can use these
-const CreateCustomerForm = ({ onSuccess }) => {
+const UpdateProduitForm = ({fetchProduits, initialValues, produitId}) => {
     return (
         <>
+            <VStack spacing={'5'} mb={'5'}>
+                <Image
+                    borderRadius={'full'}
+                    boxSize={'150px'}
+                    objectFit={'cover'}
+                    src={produitProfilePictureUrl(produitId)}
+                />
+                <MyDropzone
+                    produitId={produitId}
+                    fetchProduits={fetchProduits}
+                />
+            </VStack>
             <Formik
-                initialValues={{
-                    name: '',
-                    email: '',
-                    age: 0,
-                    gender: '',
-                    password: ''
-                }}
+                initialValues={initialValues}
                 validationSchema={Yup.object({
                     name: Yup.string()
                         .max(15, 'Must be 15 characters or less')
@@ -62,39 +90,29 @@ const CreateCustomerForm = ({ onSuccess }) => {
                         .min(16, 'Must be at least 16 years of age')
                         .max(100, 'Must be less than 100 years of age')
                         .required(),
-                    password: Yup.string()
-                        .min(4, 'Must be 4 characters or more')
-                        .max(15, 'Must be 15 characters or less')
-                        .required('Required'),
-                    gender: Yup.string()
-                        .oneOf(
-                            ['MALE', 'FEMALE'],
-                            'Invalid gender'
-                        )
-                        .required('Required'),
                 })}
-                onSubmit={(customer, {setSubmitting}) => {
+                onSubmit={(updatedProduit, {setSubmitting}) => {
                     setSubmitting(true);
-                    saveCustomer(customer)
+                    updateProduit(produitId, updatedProduit)
                         .then(res => {
                             console.log(res);
                             successNotification(
-                                "Customer saved",
-                                `${customer.name} was successfully saved`
+                                "Produit updated",
+                                `${updatedProduit.name} was successfully updated`
                             )
-                            onSuccess(res.headers["authorization"]);
+                            fetchProduits();
                         }).catch(err => {
-                            console.log(err);
-                            errorNotification(
-                                err.code,
-                                err.response.data.message
-                            )
+                        console.log(err);
+                        errorNotification(
+                            err.code,
+                            err.response.data.message
+                        )
                     }).finally(() => {
-                         setSubmitting(false);
+                        setSubmitting(false);
                     })
                 }}
             >
-                {({isValid, isSubmitting}) => (
+                {({isValid, isSubmitting, dirty}) => (
                     <Form>
                         <Stack spacing={"24px"}>
                             <MyTextInput
@@ -118,20 +136,7 @@ const CreateCustomerForm = ({ onSuccess }) => {
                                 placeholder="20"
                             />
 
-                            <MyTextInput
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder={"pick a secure password"}
-                            />
-
-                            <MySelect label="Gender" name="gender">
-                                <option value="">Select gender</option>
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                            </MySelect>
-
-                            <Button disabled={!isValid || isSubmitting} type="submit">Submit</Button>
+                            <Button disabled={!(isValid && dirty) || isSubmitting} type="submit">Submit</Button>
                         </Stack>
                     </Form>
                 )}
@@ -140,4 +145,4 @@ const CreateCustomerForm = ({ onSuccess }) => {
     );
 };
 
-export default CreateCustomerForm;
+export default UpdateProduitForm;

@@ -6,21 +6,21 @@ import {
 } from '@chakra-ui/react';
 import SidebarWithHeader from "./components/shared/SideBar.jsx";
 import { useEffect, useState } from 'react';
-import { getCustomers } from "./services/client.js";
-import CardWithImage from "./components/customer/CustomerCard.jsx";
-import CreateCustomerDrawer from "./components/customer/CreateCustomerDrawer.jsx";
+import { getProducts } from "./services/client.js";
+import CardWithImage from "./components/customer/ProduitCard.jsx";
+import CreateProduitDrawer from "./components/customer/CreateProduitDrawer.jsx";
 import {errorNotification} from "./services/notification.js";
 
-const Customer = () => {
+const Produit = () => {
 
-    const [customers, setCustomers] = useState([]);
+    const [produits, setProduits] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setError] = useState("");
 
-    const fetchCustomers = () => {
+    const fetchProduits = () => {
         setLoading(true);
-        getCustomers().then(res => {
-            setCustomers(res.data)
+        getProducts().then(res => {
+            setProduits(res.data)
         }).catch(err => {
             setError(err.response.data.message)
             errorNotification(
@@ -33,7 +33,7 @@ const Customer = () => {
     }
 
     useEffect(() => {
-        fetchCustomers();
+        fetchProduits();
     }, [])
 
     if (loading) {
@@ -53,37 +53,37 @@ const Customer = () => {
     if (err) {
         return (
             <SidebarWithHeader>
-                <CreateCustomerDrawer
-                    fetchCustomers={fetchCustomers}
+                <CreateProduitDrawer
+                    fetchProduits={fetchProduits}
                 />
                 <Text mt={5}>Ooops there was an error</Text>
             </SidebarWithHeader>
         )
     }
 
-    if(customers.length <= 0) {
+    if(produits.length <= 0) {
         return (
             <SidebarWithHeader>
-                <CreateCustomerDrawer
-                    fetchCustomers={fetchCustomers}
+                <CreateProduitDrawer
+                    fetchProduits={fetchProduits}
                 />
-                <Text mt={5}>No customers available</Text>
+                <Text mt={5}>No produits available</Text>
             </SidebarWithHeader>
         )
     }
 
     return (
         <SidebarWithHeader>
-            <CreateCustomerDrawer
-                fetchCustomers={fetchCustomers}
+            <CreateProduitDrawer
+                fetchProduits={fetchProduits}
             />
             <Wrap justify={"center"} spacing={"30px"}>
-                {customers.map((customer, index) => (
+                {produits.map((customer, index) => (
                     <WrapItem key={index}>
                         <CardWithImage
                             {...customer}
                             imageNumber={index}
-                            fetchCustomers={fetchCustomers}
+                            fetchProduits={fetchProduits}
                         />
                     </WrapItem>
                 ))}
@@ -92,4 +92,4 @@ const Customer = () => {
     )
 }
 
-export default Customer;
+export default Produit;
