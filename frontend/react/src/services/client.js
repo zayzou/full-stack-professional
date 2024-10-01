@@ -9,10 +9,23 @@ const getAuthConfig = () => ({
     }
 })
 
+
+//Product
 export const getProducts = async () => {
     try {
         return await axios.get(
             `${API_BASE_URL}/products/all`,
+            getAuthConfig()
+        )
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const getProduct = async (id) => {
+    try {
+        return await axios.get(
+            `${API_BASE_URL}/products/${id}`,
             getAuthConfig()
         )
     } catch (e) {
@@ -34,7 +47,7 @@ export const saveProduit = async (product) => {
 export const updateProduit = async (id, update) => {
     try {
         return await axios.put(
-            `${API_BASE_URL}/api/v1/products/${id}`,
+            `${API_BASE_URL}/products/${id}`,
             update,
             getAuthConfig()
         )
@@ -46,7 +59,7 @@ export const updateProduit = async (id, update) => {
 export const deleteProduit = async (id) => {
     try {
         return await axios.delete(
-            `${API_BASE_URL}/api/v1/products/${id}`,
+            `${API_BASE_URL}/products/${id}`,
             getAuthConfig()
         )
     } catch (e) {
@@ -54,21 +67,10 @@ export const deleteProduit = async (id) => {
     }
 }
 
-export const login = async (emailAndPassword) => {
-    try {
-        return await axios.post(
-            `${API_BASE_URL}/auth/login`,
-            emailAndPassword
-        )
-    } catch (e) {
-        throw e;
-    }
-}
-
-export const uploadProduitProfilePicture = async (id, formData) => {
+export const uploadOneProductPicture = async (id, formData) => {
     try {
         return axios.post(
-            `${API_BASE_URL}/api/v1/products/${id}/profile-image`,
+            `${API_BASE_URL}/products/${id}/product-images`,
             formData,
             {
                 ...getAuthConfig(),
@@ -80,5 +82,26 @@ export const uploadProduitProfilePicture = async (id, formData) => {
     }
 }
 
-export const produitProfilePictureUrl = (id) =>
-    `${API_BASE_URL}/api/v1/products/${id}/profile-image`;
+export const setProductProfilePicture = async (idProduit, imageKey) => {
+    try {
+        return axios.post(
+            `${API_BASE_URL}/products/${idProduit}/product-images/${imageKey}`,
+            getAuthConfig()
+        );
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+//Auth
+export const login = async (emailAndPassword) => {
+    try {
+        return await axios.post(
+            `${API_BASE_URL}/auth/login`,
+            emailAndPassword
+        )
+    } catch (e) {
+        throw e;
+    }
+}

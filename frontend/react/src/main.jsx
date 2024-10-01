@@ -31,12 +31,12 @@ const router = createBrowserRouter([
 ReactDOM
     .createRoot(document.getElementById('root'))
     .render(
-        <React.StrictMode>
+        <>
             <ChakraProvider>
                 <AuthProvider>
                     <RouterProvider router={router} />
                 </AuthProvider>
                 <ToastContainer />
             </ChakraProvider>
-        </React.StrictMode>,
+        </>,
     )

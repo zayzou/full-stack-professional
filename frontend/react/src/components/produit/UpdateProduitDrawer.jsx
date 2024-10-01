@@ -10,11 +10,34 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import UpdateProduitForm from "./UpdateProduitForm.jsx";
+import {useState} from "react";
+import {getProduct} from "../../services/client.js";
+import {errorNotification} from "../../services/notification.js";
 
 const CloseIcon = () => "x";
 
-const UpdateProduitDrawer = ({ fetchProduits, initialValues, produitId }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+const UpdateProduitDrawer = ({fetchProduits, produitId}) => {
+    const {isOpen, onOpen, onClose} = useDisclosure()
+    const [produit, setProduit] = useState([]);
+    //fetch single product info
+    const fetchProduit = () => {
+        //todo maybe add loading here
+        getProduct(produitId).then(res => {
+            setProduit(res.data)
+            onOpen();
+        }).catch(err => {
+            errorNotification(
+                err.code,
+                err.response.data.message
+            )
+        }).finally(() => {
+            //todo replace with end loading
+        })
+    }
+
+    const handleOnClick = () => {
+        fetchProduit()
+    }
     return <>
         <Button
             bg={'gray.200'}
@@ -24,20 +47,21 @@ const UpdateProduitDrawer = ({ fetchProduits, initialValues, produitId }) => {
                 transform: 'translateY(-2px)',
                 boxShadow: 'lg'
             }}
-            onClick={onOpen}
+            onClick={handleOnClick}
         >
-            Update
+            Modifier
         </Button>
         <Drawer isOpen={isOpen} onClose={onClose} size={"xl"}>
-            <DrawerOverlay />
+            <DrawerOverlay/>
             <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>Update produit</DrawerHeader>
+                <DrawerCloseButton/>
+                <DrawerHeader>Modifier produit</DrawerHeader>
 
                 <DrawerBody>
                     <UpdateProduitForm
+                        produit={produit}
                         fetchProduits={fetchProduits}
-                        initialValues={initialValues}
+                        initialValues={{...produit}}
                         produitId={produitId}
                     />
                 </DrawerBody>
@@ -47,12 +71,12 @@ const UpdateProduitDrawer = ({ fetchProduits, initialValues, produitId }) => {
                         leftIcon={<CloseIcon/>}
                         colorScheme={"teal"}
                         onClick={onClose}>
-                    Close
+                        Close
                     </Button>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
-        </>
+    </>
 
 }
 

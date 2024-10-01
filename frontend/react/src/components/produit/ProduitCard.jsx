@@ -26,8 +26,6 @@ export default function CardWithImage({
                                           id,
                                           name,
                                           codeArticle,
-                                          email,
-                                          age,
                                           category,
                                           brand,
                                           productImage,
@@ -63,14 +61,12 @@ export default function CardWithImage({
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                             {name}
                         </Heading>
-                        <Text color={'gray.500'}>{email}</Text>
                         <Text color={'gray.500'}>{brand.name} | {category.name}</Text>
                     </Stack>
                 </Box>
                 <Stack direction={'row'} justify={'center'} spacing={6} p={4}>
                     <Stack>
                         <UpdateProduitDrawer
-                            initialValues={{name, email, age}}
                             produitId={id}
                             fetchProduits={fetchProduits}
                         />

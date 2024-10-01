@@ -1,14 +1,9 @@
-import {
-    Wrap,
-    WrapItem,
-    Spinner,
-    Text
-} from '@chakra-ui/react';
+import {Spinner, Text, Wrap, WrapItem} from '@chakra-ui/react';
 import SidebarWithHeader from "./components/shared/SideBar.jsx";
-import { useEffect, useState } from 'react';
-import { getProducts } from "./services/client.js";
-import CardWithImage from "./components/customer/ProduitCard.jsx";
-import CreateProduitDrawer from "./components/customer/CreateProduitDrawer.jsx";
+import {useEffect, useState} from 'react';
+import {getProducts} from "./services/client.js";
+import CardWithImage from "./components/produit/ProduitCard.jsx";
+import CreateProduitDrawer from "./components/produit/CreateProduitDrawer.jsx";
 import {errorNotification} from "./services/notification.js";
 
 const Produit = () => {
@@ -54,18 +49,18 @@ const Produit = () => {
         return (
             <SidebarWithHeader>
                 <CreateProduitDrawer
-                    fetchProduits={fetchProduits}
+                    produits={produits}
                 />
                 <Text mt={5}>Ooops there was an error</Text>
             </SidebarWithHeader>
         )
     }
 
-    if(produits.length <= 0) {
+    if (produits.length <= 0) {
         return (
             <SidebarWithHeader>
                 <CreateProduitDrawer
-                    fetchProduits={fetchProduits}
+                    produits={produits}
                 />
                 <Text mt={5}>No produits available</Text>
             </SidebarWithHeader>
@@ -75,15 +70,14 @@ const Produit = () => {
     return (
         <SidebarWithHeader>
             <CreateProduitDrawer
-                fetchProduits={fetchProduits}
+                // fetchProduits={fetchProduits}
             />
             <Wrap justify={"center"} spacing={"30px"}>
-                {produits.map((customer, index) => (
+                {produits.map((produit, index) => (
                     <WrapItem key={index}>
                         <CardWithImage
-                            {...customer}
+                            {...produit}
                             imageNumber={index}
-                            fetchProduits={fetchProduits}
                         />
                     </WrapItem>
                 ))}
