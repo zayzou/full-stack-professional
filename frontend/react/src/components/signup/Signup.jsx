@@ -44,7 +44,7 @@ const Signup = () => {
                 bgGradient={{sm: 'linear(to-r, blue.600, purple.600)'}}
             >
                 <Text fontSize={"6xl"} color={'white'} fontWeight={"bold"} mb={5}>
-                    <Link target={"_blank"} href={"https://amigoscode.com/courses"}>
+                    <Link target={"_blank"} href={"https://zahir.com/courses"}>
                         Enrol Now
                     </Link>
                 </Text>

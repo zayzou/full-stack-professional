@@ -12,7 +12,7 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-import {Formik, Form, useField} from "formik";
+import {Form, Formik, useField} from "formik";
 import * as Yup from 'yup';
 import {useAuth} from "../context/AuthContext.jsx";
 import {errorNotification} from "../../services/notification.js";
@@ -39,7 +39,7 @@ const MyTextInput = ({label, ...props}) => {
 };
 
 const LoginForm = () => {
-    const { login } = useAuth();
+    const {login} = useAuth();
     const navigate = useNavigate();
 
     return (
@@ -48,11 +48,11 @@ const LoginForm = () => {
             validationSchema={
                 Yup.object({
                     email: Yup.string()
-                        .email("Must be valid email")
-                        .required("Email is required"),
+                        .email("L'email doit être valide")
+                        .required("L'email est requis"),
                     password: Yup.string()
-                        .max(20, "Password cannot be more than 20 characters")
-                        .required("Password is required")
+                        .max(20, "Le mot de passe ne peut pas dépasser 20 caractères")
+                        .required("Le mot de passe est requis")
                 })
             }
             initialValues={{email: '', password: ''}}
@@ -78,13 +78,13 @@ const LoginForm = () => {
                             label={"Email"}
                             name={"email"}
                             type={"email"}
-                            placeholder={"hello@amigoscode.com"}
+                            placeholder={"votre@email.com"}
                         />
                         <MyTextInput
-                            label={"Password"}
+                            label={"Mot de passe"}
                             name={"password"}
                             type={"password"}
-                            placeholder={"Type your password"}
+                            placeholder={"Tapez votre mot de passe"}
                         />
 
                         <Button
@@ -102,7 +102,7 @@ const LoginForm = () => {
 
 const Login = () => {
 
-    const { customer } = useAuth();
+    const {customer} = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -118,13 +118,13 @@ const Login = () => {
                     <Image
                         src={"https://images.ctfassets.net/8sdirxbcrn01/5eKfbbR4CoLT88i54gOWwy/0770b0f3579c54949a04dfd0c40cfcb6/stilina-removebg-preview.png"}
                         boxSize={"200px"}
-                        alt={"Amigoscode Logo"}
+                        alt={"Logo Amigoscode"}
                         alignSelf={"center"}
                     />
                     <Heading fontSize={'2xl'} mb={15}>Se connecter</Heading>
                     <LoginForm/>
                     <Link color={"blue.500"} href={"/signup"}>
-                        Dont have an account? Signup now.
+                        Vous n'avez pas de compte ? Contactez l'administrateur.
                     </Link>
                 </Stack>
             </Flex>
@@ -134,14 +134,14 @@ const Login = () => {
                 flexDirection={"column"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                bgGradient={{sm: 'linear(to-r, blue.600, blue.800)'}}
+                bgGradient={{sm: 'linear(to-r, yellow.200, yellow.400)'}}
             >
                 <Text fontSize={"6xl"} color={'white'} fontWeight={"bold"} mb={5}>
-                    <Link target={"_blank"} href={"https://amigoscode.com/courses"}>
+                    <Link target={"_blank"} href={"https://zahir.com/courses"}>
                     </Link>
                 </Text>
                 <Image
-                    alt={'Login Image'}
+                    alt={'Image de connexion'}
                     objectFit={'scale-down'}
                     src={
                         'https://dev.stilina.com/assets/msb-XGVe-rnY.png'

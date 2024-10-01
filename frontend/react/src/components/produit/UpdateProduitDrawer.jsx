@@ -61,7 +61,6 @@ const UpdateProduitDrawer = ({fetchProduits, produitId}) => {
                     <UpdateProduitForm
                         produit={produit}
                         fetchProduits={fetchProduits}
-                        initialValues={{...produit}}
                         produitId={produitId}
                     />
                 </DrawerBody>
