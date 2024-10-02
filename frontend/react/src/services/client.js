@@ -14,7 +14,7 @@ const getAuthConfig = () => ({
 export const getProducts = async () => {
     try {
         return await axios.get(
-            `${API_BASE_URL}/products/all`,
+            `${API_BASE_URL}/products?page=1&size=10`,
             getAuthConfig()
         )
     } catch (e) {
@@ -105,3 +105,18 @@ export const login = async (emailAndPassword) => {
         throw e;
     }
 }
+
+//Pagination
+
+// , sub_menus: ["stilina", "kangaro"]
+// export const product_url = "https://stilina-api-env.eba-5bv9wity.ca-central-1.elasticbeanstalk.com/api/v1";
+export const product_url = "http://localhost:8080/api/v1";
+
+export const customAxiosInstance = axios.create({
+    baseURL: product_url,
+});
+const sortMap = new Map();
+sortMap.set("a-z", "name,asc");
+sortMap.set("z-a", "name,desc");
+sortMap.set("Ajouté récemment", "createdAt,desc");
+export const sortOptions = sortMap;
