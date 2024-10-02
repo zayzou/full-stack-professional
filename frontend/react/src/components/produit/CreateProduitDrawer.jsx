@@ -41,7 +41,7 @@ const CreateProduitDrawer = ({ fetchProduits }) => {
                         leftIcon={<CloseIcon/>}
                         colorScheme={"teal"}
                         onClick={onClose}>
-                    Close
+                    Fermer
                     </Button>
                 </DrawerFooter>
             </DrawerContent>

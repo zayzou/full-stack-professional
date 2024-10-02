@@ -93,6 +93,17 @@ export const setProductProfilePicture = async (idProduit, imageKey) => {
     }
 }
 
+export const deleteProductPicture = async (imageKey) => {
+    try {
+        return axios.delete(
+            `${API_BASE_URL}/images/${imageKey}`,
+            getAuthConfig()
+        );
+    } catch (e) {
+        throw e;
+    }
+}
+
 
 //Auth
 export const login = async (emailAndPassword) => {

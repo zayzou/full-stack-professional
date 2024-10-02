@@ -60,7 +60,7 @@ const UpdateProduitDrawer = ({fetchProduits, produitId}) => {
                 <DrawerBody>
                     <UpdateProduitForm
                         produit={produit}
-                        fetchProduits={fetchProduits}
+                        fetchProduit={fetchProduit}
                         produitId={produitId}
                     />
                 </DrawerBody>
@@ -70,7 +70,7 @@ const UpdateProduitDrawer = ({fetchProduits, produitId}) => {
                         leftIcon={<CloseIcon/>}
                         colorScheme={"teal"}
                         onClick={onClose}>
-                        Close
+                        Fermer
                     </Button>
                 </DrawerFooter>
             </DrawerContent>

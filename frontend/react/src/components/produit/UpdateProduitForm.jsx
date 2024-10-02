@@ -42,7 +42,7 @@ const MyTextInput = ({label, ...props}) => {
     );
 };
 
-const MyDropzone = ({produitId, fetchProduits}) => {
+const MyDropzone = ({produitId, fetchProduit}) => {
     const onDrop = useCallback(acceptedFiles => {
         const formData = new FormData();
         formData.append("image", acceptedFiles[0])
@@ -51,7 +51,7 @@ const MyDropzone = ({produitId, fetchProduits}) => {
             formData
         ).then(() => {
             successNotification("Success", "Profile picture uploaded")
-            fetchProduits()
+            fetchProduit()
         }).catch(() => {
             errorNotification("Error", "Profile picture failed upload")
         })
@@ -79,19 +79,14 @@ const MyDropzone = ({produitId, fetchProduits}) => {
 
 
 // And now we can use these
-const UpdateProduitForm = ({produit, fetchProduits, produitId}) => {
-    const handleDelete = async (productId) => {
+const UpdateProduitForm = ({produit, fetchProduit, produitId}) => {
+
+    const handleDeleteProductPicture = async (imageKey) => {
         try {
-            await deleteProduct(productId)
-            toast({
-                title: 'Product deleted',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-            })
-            // Here you would typically update your state to remove the deleted product
+            /*todo uncomment this when implemented await deleteProductPicture(imageKey)*/
+            successNotification('Pas encore implemente 🙁')
         } catch (error) {
-            toast({
+            errorNotification({
                 title: 'Error deleting product',
                 status: 'error',
                 duration: 3000,
@@ -102,6 +97,7 @@ const UpdateProduitForm = ({produit, fetchProduits, produitId}) => {
 
     const handleSetProfileImage = async (imageKey) => {
         await setProductProfilePicture(produit.id, imageKey)
+        fetchProduit()
     }
     return (
         <>
@@ -114,7 +110,7 @@ const UpdateProduitForm = ({produit, fetchProduits, produitId}) => {
                 />
                 <MyDropzone
                     produitId={produitId}
-                    fetchProduits={fetchProduits}
+                    fetchProduit={fetchProduit}
                 />
                 <VStack>
                     <SimpleGrid columns={3} spacing={10}>
@@ -134,7 +130,7 @@ const UpdateProduitForm = ({produit, fetchProduits, produitId}) => {
                                         right="2"
                                     />
                                     <MenuList>
-                                        <MenuItem onClick={() => handleDelete(image.key)}>Supprimer</MenuItem>
+                                        <MenuItem onClick={() => handleDeleteProductPicture(image.key)}>Supprimer</MenuItem>
                                         <MenuItem onClick={() => handleSetProfileImage(image.key)}>
                                             Photo de profil
                                         </MenuItem>
@@ -176,7 +172,7 @@ const UpdateProduitForm = ({produit, fetchProduits, produitId}) => {
                                 "Produit updated",
                                 `${updatedProduit.name} was successfully updated`
                             )
-                            fetchProduits();
+                            fetchProduit();
                         }).catch(err => {
                         console.log(err);
                         errorNotification(

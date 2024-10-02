@@ -28,8 +28,7 @@ export default function CardWithImage({
                                           codeArticle,
                                           category,
                                           brand,
-                                          productImage,
-                                          fetchProduits
+                                          productImage
                                       }) {
 
     const {isOpen, onOpen, onClose} = useDisclosure()
@@ -68,7 +67,6 @@ export default function CardWithImage({
                     <Stack>
                         <UpdateProduitDrawer
                             produitId={id}
-                            fetchProduits={fetchProduits}
                         />
                     </Stack>
                     <Stack>
