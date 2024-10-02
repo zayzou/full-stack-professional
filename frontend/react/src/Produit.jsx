@@ -5,6 +5,7 @@ import CardWithImage from "./components/produit/ProduitCard.jsx";
 import CreateProduitDrawer from "./components/produit/CreateProduitDrawer.jsx";
 import PaginationContainer from "./components/produit/PaginationContainer.jsx";
 import {useLoaderData} from "react-router-dom";
+import ProductSearch from "./components/produit/ProductSearch.jsx";
 
 export const loader = async ({request}) => {
     const params = Object.fromEntries(
@@ -29,6 +30,9 @@ const Produit = () => {
     return (
         <SidebarWithHeader>
             <CreateProduitDrawer/>
+            <Wrap>
+                <ProductSearch/>
+            </Wrap>
             <Wrap justify={"center"} spacing={"30px"}>
                 {products.map((produit, index) => (
                     <WrapItem key={index}>
