@@ -30,10 +30,8 @@ const Produit = () => {
     return (
         <SidebarWithHeader>
             <CreateProduitDrawer/>
-            <Wrap>
-                <ProductSearch/>
-            </Wrap>
             <Wrap justify={"center"} spacing={"30px"}>
+                <ProductSearch/>
                 {products.map((produit, index) => (
                     <WrapItem key={index}>
                         <CardWithImage
