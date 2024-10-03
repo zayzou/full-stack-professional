@@ -11,20 +11,20 @@ const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
 
-    const [customer, setProduit] = useState(null);
+    const [user, setUser] = useState(null);
 
-    const setProduitFromToken = () => {
+    const setUserFromToken = () => {
         let token = localStorage.getItem("access_token");
         if (token) {
             token = jwtDecode(token);
-            setProduit({
+            setUser({
                 email: token.sub,
                 roles: token.scopes
             })
         }
     }
     useEffect(() => {
-        setProduitFromToken()
+        setUserFromToken()
     }, [])
 
 
@@ -36,9 +36,9 @@ const AuthProvider = ({ children }) => {
 
                 const decodedToken = jwtDecode(jwtToken);
 
-                setProduit({
+                setUser({
                     email: decodedToken.sub,
-                    // roles: decodedToken.scopes
+                    // todo manage roles from jwt roles: decodedToken.scopes
                     roles: ["ADMIN"]
                 })
                 resolve(res);
@@ -50,10 +50,10 @@ const AuthProvider = ({ children }) => {
 
     const logOut = () => {
         localStorage.removeItem("access_token")
-        setProduit(null)
+        setUser(null)
     }
 
-    const isProduitAuthenticated = () => {
+    const isUserAuthenticated = () => {
         const token = localStorage.getItem("access_token");
         if (!token) {
             return false;
@@ -68,11 +68,11 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            customer,
+            user,
             login,
             logOut,
-            isProduitAuthenticated,
-            setProduitFromToken
+            isUserAuthenticated: isUserAuthenticated,
+            setUserFromToken
         }}>
             {children}
         </AuthContext.Provider>
