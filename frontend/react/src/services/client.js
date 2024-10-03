@@ -131,3 +131,42 @@ sortMap.set("a-z", "name,asc");
 sortMap.set("z-a", "name,desc");
 sortMap.set("Ajouté récemment", "createdAt,desc");
 export const sortOptions = sortMap;
+
+//Constantes pour le formulaire
+export const formFields = [
+    {
+        label: "Code Article",
+        name: "codeArticle",
+        placeholder: "Entrez le code du produit"
+    },
+    {
+        label: "Nom",
+        name: "name",
+        placeholder: "Entrez le nom du produit"
+    },
+    {
+        label: "Description",
+        name: "description",
+        placeholder: "Entrez la description du produit"
+    },
+    {
+        label: "Emballage",
+        name: "packaging",
+        placeholder: "Entrez les détails de l'emballage"
+    },
+    {
+        label: "Emballage Interne",
+        name: "innerPackaging",
+        placeholder: "Entrez les détails de l'emballage interne"
+    },
+    {
+        label: "Marque",
+        name: "brand",
+        placeholder: "Entrez l'UUID de la marque"
+    },
+    {
+        label: "Catégorie",
+        name: "category",
+        placeholder: "Entrez l'UUID de la catégorie"
+    }
+];

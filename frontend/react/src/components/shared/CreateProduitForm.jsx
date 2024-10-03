@@ -1,8 +1,8 @@
 import {Form, Formik, useField} from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {saveProduit} from "../../services/client.js";
-import {successNotification, errorNotification} from "../../services/notification.js";
+import {formFields, saveProduit} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({label, ...props}) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -40,16 +40,18 @@ const MySelect = ({label, ...props}) => {
 };
 
 // And now we can use these
-const CreateProduitForm = ({ onSuccess }) => {
+const CreateProduitForm = ({onSuccess}) => {
     return (
         <>
             <Formik
                 initialValues={{
+                    codeArticle: '',
                     name: '',
-                    email: '',
-                    age: 0,
-                    gender: '',
-                    password: ''
+                    description: '',
+                    packaging: '',
+                    innerPackaging: '',
+                    category: '',
+                    brand: '',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -84,54 +86,32 @@ const CreateProduitForm = ({ onSuccess }) => {
                             )
                             onSuccess(res.headers["authorization"]);
                         }).catch(err => {
-                            console.log(err);
-                            errorNotification(
-                                err.code,
-                                err.response.data.message
-                            )
+                        console.log(err);
+                        errorNotification(
+                            err.code,
+                            err.response.data.message
+                        )
                     }).finally(() => {
-                         setSubmitting(false);
+                        setSubmitting(false);
                     })
                 }}
             >
                 {({isValid, isSubmitting}) => (
                     <Form>
                         <Stack spacing={"24px"}>
-                            <MyTextInput
-                                label="Name"
-                                name="name"
-                                type="text"
-                                placeholder="Jane"
-                            />
-
-                            <MyTextInput
-                                label="Email Address"
-                                name="email"
-                                type="email"
-                                placeholder="jane@formik.com"
-                            />
-
-                            <MyTextInput
-                                label="Age"
-                                name="age"
-                                type="number"
-                                placeholder="20"
-                            />
-
-                            <MyTextInput
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder={"pick a secure password"}
-                            />
-
-                            <MySelect label="Gender" name="gender">
-                                <option value="">Select gender</option>
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                            </MySelect>
-
-                            <Button disabled={!isValid || isSubmitting} type="submit">Submit</Button>
+                            {formFields.map((field, index) => (
+                                <MyTextInput
+                                    key={index}
+                                    label={field.label}
+                                    name={field.name}
+                                    type="text"
+                                    placeholder={field.placeholder}
+                                />
+                            ))}
+                            {/* Submit Button */}
+                            <Button disabled={!isValid || isSubmitting} type="submit">
+                                Ajouter
+                            </Button>
                         </Stack>
                     </Form>
                 )}

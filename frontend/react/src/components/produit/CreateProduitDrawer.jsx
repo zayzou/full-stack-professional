@@ -28,7 +28,7 @@ const CreateProduitDrawer = ({ fetchProduits }) => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>Nouveau new produit</DrawerHeader>
+                <DrawerHeader>Nouveau produit</DrawerHeader>
 
                 <DrawerBody>
                     <CreateProduitForm

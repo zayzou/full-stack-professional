@@ -17,7 +17,7 @@ import {
     Stack,
     VStack
 } from "@chakra-ui/react";
-import {setProductProfilePicture, updateProduit, uploadOneProductPicture} from "../../services/client.js";
+import {formFields, setProductProfilePicture, updateProduit, uploadOneProductPicture} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
 import {useCallback} from "react";
 import {useDropzone} from "react-dropzone";
@@ -130,7 +130,8 @@ const UpdateProduitForm = ({produit, fetchProduit, produitId}) => {
                                         right="2"
                                     />
                                     <MenuList>
-                                        <MenuItem onClick={() => handleDeleteProductPicture(image.key)}>Supprimer</MenuItem>
+                                        <MenuItem
+                                            onClick={() => handleDeleteProductPicture(image.key)}>Supprimer</MenuItem>
                                         <MenuItem onClick={() => handleSetProfileImage(image.key)}>
                                             Photo de profil
                                         </MenuItem>
@@ -187,65 +188,20 @@ const UpdateProduitForm = ({produit, fetchProduit, produitId}) => {
                 {({isValid, isSubmitting, dirty}) => (
                     <Form>
                         <Stack spacing={"24px"}>
-                            {/* Code Article */}
-                            <MyTextInput
-                                label="Code Article"
-                                name="codeArticle"
-                                type="text"
-                                placeholder="Enter product code"
-                            />
-
-                            {/* Name */}
-                            <MyTextInput
-                                label="Name"
-                                name="name"
-                                type="text"
-                                placeholder="Enter product name"
-                            />
-
-                            {/* Description */}
-                            <MyTextInput
-                                label="Description"
-                                name="description"
-                                type="text"
-                                placeholder="Enter product description"
-                            />
-
-                            {/* Packaging */}
-                            <MyTextInput
-                                label="Packaging"
-                                name="packaging"
-                                type="text"
-                                placeholder="Enter packaging details"
-                            />
-
-                            {/* Inner Packaging */}
-                            <MyTextInput
-                                label="Inner Packaging"
-                                name="innerPackaging"
-                                type="text"
-                                placeholder="Enter inner packaging details"
-                            />
-
-                            {/* Brand ID */}
-                            <MyTextInput
-                                label="Brand"
-                                name="brand"
-                                type="text"
-                                placeholder="Enter brand UUID"
-                            />
-
-                            {/* Category ID */}
-                            <MyTextInput
-                                label="Category"
-                                name="category"
-                                type="text"
-                                placeholder="Enter category UUID"
+                            {formFields.map((field, index) => (
+                                <MyTextInput
+                                    key={index}
+                                    label={field.label}
+                                    name={field.name}
+                                    type="text"
+                                    placeholder={field.placeholder}
+                                />
+                            ))}
                             />
 
                             {/* Submit Button */}
                             <Button disabled={!(isValid && dirty) || isSubmitting} type="submit">
-                                Submit
+                                Modifier
                             </Button>
                         </Stack>
                     </Form>
